@@ -1,0 +1,104 @@
+﻿@page "/CascadingParameter"
+@using BlazorAppNet8.Models
+@using BlazorAppNet8.Services
+@inject SomeService SomeService
+@inject CascadingValueSource<SomeModel> SomeModelSource
+
+
+
+<PageTitle>Cascading Parameter</PageTitle>
+
+@if (SomeModel?.ConstructorSetProperty != null)
+{
+    <p>ConstructorSetProperty: @SomeModel?.ConstructorSetProperty</p>
+}
+@if (SomeModel?.InitSetProperty != null)
+{
+    <p>InitSetProperty: @SomeModel?.InitSetProperty</p>
+}
+@if (SomeModel?.LazySetProperty != null)
+{
+    <p>LazySetProperty: @SomeModel?.LazySetProperty</p>
+}
+@if (SomeModel?.TimerSetProperty != null)
+{
+    <p>TimerSetProperty: @SomeModel?.TimerSetProperty</p>
+}
+@if (SomeModel?.ReactiveSetProperty != null)
+{
+    <p>ReactiveSetProperty: @SomeModel?.ReactiveSetProperty</p>
+}
+
+
+<p></p>
+<button id="RefreshButton" class="btn btn-primary" @onclick="ToggleRefresh">@RefreshLabel</button>
+
+
+@code {
+
+
+    [CascadingParameter]
+    protected SomeModel? SomeModel { get; set; }
+
+    private bool RefreshDisabled { get; set; }
+    private string RefreshLabel { get; set; } = "Disable Refresh !";
+
+
+    /// <summary>
+    /// On Initialized it launches everything in here
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnInitializedAsync()
+    {
+        SomeModel.InitSetProperty = "I was created on Init";
+        Task T = Task.Run(async () =>  // async void
+        {
+            Thread.Sleep(5000);
+            SomeModel.LazySetProperty = "I was created after a 5 Seconds";
+            // we need StateHasChanged() because this is an async void handler
+            // we need to Invoke it because we could be on the wrong Thread
+            await InvokeAsync(StateHasChanged);
+        });
+        Task T2 = Task.Run(TimerSetProperty_Timer);
+    }
+
+
+    /// <summary>
+    /// Background Thread that notifies this web interface to refresh its changes every 1 second
+    /// </summary>
+    /// <returns></returns>
+    private async Task TimerSetProperty_Timer()
+    {
+        var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (await timer.WaitForNextTickAsync())
+        {
+            if (!RefreshDisabled)
+            {
+                //This notifies just this RAZOR page that state has changed and it should rerender parts.
+                await InvokeAsync(StateHasChanged);
+            }
+            //This notifies anything inheriting the CascadingValueSource that something has changed it
+            //SomeModelSource.NotifyChangedAsync();
+        }
+    }
+     
+
+    /// <summary>
+    /// User clicked a button so update dom
+    /// </summary>
+    private async void ToggleRefresh()
+    {
+        if (RefreshDisabled)
+        {
+            RefreshLabel = "Disable Refresh !";
+        }
+        else
+        {
+            RefreshLabel = "Enable Refresh !";
+        }
+        RefreshDisabled = !RefreshDisabled;
+
+
+    }
+
+}

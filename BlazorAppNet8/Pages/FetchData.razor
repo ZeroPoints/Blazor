@@ -1,0 +1,83 @@
+﻿@page "/fetchdata"
+@using BlazorAppNet8.Data
+@inject WeatherForecastService ForecastService
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<span>Time Left: @TimeLeft</span>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    private int TimeLeft = 5;
+
+    System.Threading.Timer timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        Task.Run(UpdateForecast);
+    }
+
+
+    private async Task UpdateForecast()
+    {
+        var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (await timer.WaitForNextTickAsync())
+        {
+            TimeLeft--;
+            if(TimeLeft == 0)
+            {
+                //do something here every 5s
+                forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+                TimeLeft = 5;
+            }
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+    private async Task Counter1Timer()
+    {
+        var timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+        while (await timer.WaitForNextTickAsync())
+        {
+
+            //do something here every 5s
+            forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}
