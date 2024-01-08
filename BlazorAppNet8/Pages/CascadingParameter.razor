@@ -8,6 +8,9 @@
 
 <PageTitle>Cascading Parameter</PageTitle>
 
+
+<FluentCard>
+
 @if (SomeModel?.ConstructorSetProperty != null)
 {
     <p>ConstructorSetProperty: @SomeModel?.ConstructorSetProperty</p>
@@ -30,8 +33,8 @@
 }
 
 
-<p></p>
-<button id="RefreshButton" class="btn btn-primary" @onclick="ToggleRefresh">@RefreshLabel</button>
+    <FluentButton Appearance="@Appearance.Accent" id="RefreshButton" @onclick="ToggleRefresh">@RefreshLabel</FluentButton>
+</FluentCard>
 
 
 @code {

@@ -4,6 +4,7 @@ using BlazorAppNet8.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace BlazorAppNet8
 {
@@ -36,6 +37,8 @@ namespace BlazorAppNet8
                 //var source = new CascadingValueSource<SomeModel>(model, isFixed: false);
                 //return source;
             });
+
+            builder.Services.AddFluentUIComponents();
 
             var app = builder.Build();
 

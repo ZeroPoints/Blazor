@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAppNet8", "BlazorAppNet8\BlazorAppNet8.csproj", "{A6296CC7-04FC-43F0-9208-2BC48F8F96E4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentUI", "FluentUI\FluentUI.csproj", "{55621376-84CB-4133-8697-775F4320A615}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A6296CC7-04FC-43F0-9208-2BC48F8F96E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6296CC7-04FC-43F0-9208-2BC48F8F96E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6296CC7-04FC-43F0-9208-2BC48F8F96E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55621376-84CB-4133-8697-775F4320A615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55621376-84CB-4133-8697-775F4320A615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55621376-84CB-4133-8697-775F4320A615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55621376-84CB-4133-8697-775F4320A615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
