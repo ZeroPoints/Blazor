@@ -1,12 +1,59 @@
 ﻿@inherits LayoutComponentBase
+@using BlazorAppNet8.Models
+@inject CascadingValueSource<SomeModel> SomeModelSource
 
 <PageTitle>BlazorAppNet8</PageTitle>
 
-<FluentToastProvider />
-<FluentDialogProvider />
-<FluentTooltipProvider />
-<FluentMessageBarProvider />
 
+
+<FluentLayout>
+    <FluentHeader>
+        FluentUI
+        <span id="CrossRazorNotifySpan">
+            <FluentButton Appearance="@Appearance.Accent" @onclick="ReactiveSetProperty2">Cross Razor Notify</FluentButton>
+        </span>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <NavMenu />
+        <FluentBodyContent>
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+
+    <FluentFooter>
+        @* <div class="link1">
+            <a href="https://www.fluentui-blazor.net" target="_blank">Documentation and demos</a>
+        </div>
+        <div class="link2">
+            <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
+        </div> *@
+        @* <FluentNavLink @onclick="ReactiveSetProperty2" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Cross Razor Notify</FluentNavLink> *@
+    </FluentFooter>
+</FluentLayout>
+
+
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code{
+
+    [CascadingParameter]
+    protected SomeModel? SomeModel { get; set; }
+
+
+    private async void ReactiveSetProperty2()
+    {
+        SomeModel.ReactiveSetProperty = "I was created reactively: " + SomeModel.TimerSetProperty;
+        SomeModelSource.NotifyChangedAsync();
+    }
+}
+@* 
 
 <div class="page">
     <div class="sidebar">
@@ -23,3 +70,4 @@
         </article>
     </main>
 </div>
+ *@
